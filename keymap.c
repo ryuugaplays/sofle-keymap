@@ -109,6 +109,10 @@ enum {
 #define TD_LANG KC_GRV
 #endif
 
+bool gam_ent_on;
+void gam_ent_enable(void);
+void gam_ent_disable(void);
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
@@ -495,7 +499,53 @@ bool oled_task_user(void) {
 
 #endif
 
+
+// CAPS_WORD: A "smart" Caps Lock key that only capitalizes the next identifier you type
+// and then toggles off Caps Lock automatically when you're done.
+void gam_ent_enable(void) {
+    gam_ent_on = true;
+    
+}
+
+void gam_ent_disable(void) {
+    gam_ent_on = false;
+    layer_invert(_GAMING);
+    
+}
+
+static void process_gam_ent(uint16_t keycode, const keyrecord_t *record) {
+    // Update caps word state
+    if (gam_ent_on) {
+
+        switch (keycode) {
+            // Keycodes to shift
+            case KC_A ... KC_Z:
+            case KC_MINS:
+            case KC_BSPC:
+            case KC_UNDS:
+            case KC_LPRN:
+            case KC_RPRN:
+                // When enter is pressed, returns to game layer
+                if (record->event.pressed) {
+                    tap_code(KC_ENT);
+                    gam_ent_disable();
+                }
+                break;
+        /*    default:
+                // Any other keycode should automatically return to game
+                if (record->event.pressed) {                
+                    gam_ent_disable();
+                }
+                break;*/
+        }
+    }
+}
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+        process_gam_ent(keycode, record);
+
+
     switch (keycode) {
          
         case KC_COLEMAKDH:
@@ -504,14 +554,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        
         case KC_GAMING:
             if (record->event.pressed) {
                 layer_invert(_GAMING);
             }
             return false;
         
-
         case KC_NUMPAD:
             if (record->event.pressed) {
                 layer_on(_NUMPAD);
@@ -519,6 +567,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(_NUMPAD);
             }
             return false;
+
         case KC_NAV:
             if (record->event.pressed) {
                 layer_on(_NAV);
@@ -526,6 +575,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(_NAV);
             }
             return false;
+
         case KC_ADJUST:
             if (record->event.pressed) {
                 layer_on(_ADJUST);
@@ -545,16 +595,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case GAM_ENT:
             // Toggle `gam_ent_on`
             if (record->event.pressed) {
-                tap_code(KC_ENT);
-                /*
-                if (gam_ent_on) {
+                tap_code(KC_ENT);   
+                layer_invert(_GAMING);
+            
+            /*    if (gam_ent_on) {
                     gam_ent_disable();
                     return false;
-                } else {
+                } else {*/
                     gam_ent_enable();
-                    return false;
-                }
-                */
+            /*        return false;
+                }*/
+                
             }
             return false;
             break;
@@ -611,48 +662,3 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 
 #endif
 
-/*
-// CAPS_WORD: A "smart" Caps Lock key that only capitalizes the next identifier you type
-// and then toggles off Caps Lock automatically when you're done.
-void gam_ent_enable(void) {
-    gam_ent_on = true;
-    layer_invert(_GAMING);
-    }
-}
-
-void gam_ent_disable(void) {
-    gam_ent_on = false;
-    layer_invert(_GAMING);
-    }
-}
-
-static void process_caps_word(uint16_t keycode, const keyrecord_t *record) {
-    // Update caps word state
-    if (gam_ent_on) {
-
-        switch (keycode) {
-            // Keycodes to shift
-            case KC_A ... KC_Z:
-
-            case KC_MINS:
-            case KC_BSPC:
-            case KC_UNDS:
-            case KC_LPRN:
-            case KC_RPRN:
-                // If chording mods, disable caps word
-                if (record->event.pressed) {
-                    tap_code(KC_ENT);
-                    gam_ent_disable();
-                }
-                break;
-            default:
-                // Any other keycode should automatically disable caps
-                if (record->event.pressed) {                
-                    gam_ent_disable();
-                }
-                break;
-        }
-    }
-}
-
-*/
