@@ -558,22 +558,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-/*        case TO(_COLEMAKDH):
-            if (record->event.pressed) {
-                gam_ent_on = true;
-            }
-            return true; // Let QMK handle the rest for TO(_COLEMAKDH)
-*/
+        
+
         case KC_ENTER:
-            if (gam_ent_on && record->event.pressed) {
+            if (gam_ent_on && record->event.pressed) { // Checks if GAM_ENT was pressed ingame
+                tap_code(KC_ENT);
                 gam_ent_on = false;
-                layer_invert(_GAMING); // Switch to GAMING layer
+                layer_invert(_GAMING); // Switches back to GAMING layer after chatting
             }
             return true; // Let QMK handle the rest
 
         case GAM_ENT:
             // Toggle `gam_ent_on`
             if (record->event.pressed) {
+                tap_code(KC_ENT);
                 layer_invert(_GAMING);
                 gam_ent_enable();               
             }
