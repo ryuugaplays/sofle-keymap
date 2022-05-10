@@ -500,8 +500,8 @@ bool oled_task_user(void) {
 #endif
 
 
-// CAPS_WORD: A "smart" Caps Lock key that only capitalizes the next identifier you type
-// and then toggles off Caps Lock automatically when you're done.
+// GAM_ENT: A key that taps enter to enable chat ingame, and temporarily toggles typing layer
+// When you're done chatting, pressing enter to send will automatically swap back to game layer, no extra buttons needed
 void gam_ent_enable(void) {
     gam_ent_on = true;
 }
@@ -558,8 +558,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+        case KC_ESCAPE:   // Cancels chat mode in most games
+            if (gam_ent_on && record->event.pressed) { // Checks if GAM_ENT was pressed ingame
+                tap_code(KC_ESC);
+                gam_ent_on = false;
+                layer_invert(_GAMING); // Switches back to GAMING layer after chatting
+            }
+            return true; // Let QMK handle the rest
         
-
         case KC_ENTER:
             if (gam_ent_on && record->event.pressed) { // Checks if GAM_ENT was pressed ingame
                 tap_code(KC_ENT);
