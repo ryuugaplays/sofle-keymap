@@ -1,5 +1,5 @@
 
- /* Copyright 2021 Dane Evans
+ /* Copyright 2021 Ryuuga W
   *
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,11 @@
 #define HSV_OVERRIDE_HELP(h, s, v, Override) h, s , Override
 #define HSV_OVERRIDE(hsv, Override) HSV_OVERRIDE_HELP(hsv,Override)
 
-// Light combinations
-// define SET_INDICATORS(hsv) \ //
-	 //{0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \//
-     //{35+0, 1, hsv}//
+/* Light combinations
+   define SET_INDICATORS(hsv) \ 
+	 {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \
+     {35+0, 1, hsv}
+*/
 #define SET_UNDERGLOW(hsv) \
 	{0, 6, hsv}, \
     {35, 6, hsv}
@@ -67,8 +68,8 @@
       {50, 2, hsv}, \
       {60, 2, hsv}
 
-	// {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \ //
-    // {35+0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \ // 
+	/* {0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \ 
+       {35+0, 1, HSV_OVERRIDE_HELP(hsv, INDICATOR_BRIGHTNESS)}, \ */ 
 
 
 
@@ -90,7 +91,7 @@ enum custom_keycodes {
     KC_ADJUST,
     KC_D_MUTE,
     KC_SWITCH, 
-    GAM_ENT
+    GAM_CHT
     
 };
 
@@ -109,9 +110,9 @@ enum {
 #define TD_LANG KC_GRV
 #endif
 
-bool gam_ent_on;
-void gam_ent_enable(void);
-void gam_ent_disable(void);
+bool game_chat_set;
+void game_chat_enable(void);
+void game_chat_disable(void);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -170,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------| 
   KC_LALT  ,KC_B,   KC_Z,    KC_X,    KC_C,    KC_V,   XXXXXXX,   XXXXXXX,KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_QUOT, KC_SLSH, \
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------| 
-                 XXXXXXX, KC_NUMPAD,KC_LCTRL, KC_SPC,  GAM_ENT,   KC_BSPC, KC_LSFT,  XXXXXXX,  KC_NAV, XXXXXXX \
+                 XXXXXXX, KC_NUMPAD,KC_LCTRL, KC_SPC,  GAM_CHT,   KC_BSPC, KC_LSFT,  XXXXXXX,  KC_NAV, XXXXXXX \
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/  
 ),
 
@@ -500,14 +501,14 @@ bool oled_task_user(void) {
 #endif
 
 
-// GAM_ENT: A key that taps enter to enable chat ingame, and temporarily toggles typing layer
+// GAM_CHT: A key that taps enter to enable chat ingame, and temporarily toggles typing layer
 // When you're done chatting, pressing enter to send will automatically swap back to game layer, no extra buttons needed
-void gam_ent_enable(void) {
-    gam_ent_on = true;
+void game_chat_enable(void) {
+    game_chat_set = true;
 }
 
-void gam_ent_disable(void) {
-    gam_ent_on = false;    
+void game_chat_disable(void) {
+    game_chat_set = false;    
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -558,28 +559,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case KC_ESCAPE:   // Cancels chat mode in most games
-            if (gam_ent_on && record->event.pressed) { // Checks if GAM_ENT was pressed ingame
+        case KC_ESC:                                       // Cancels chat mode in most games
+            if (game_chat_set && record->event.pressed) {  // Checks if GAM_CHT was pressed ingame
                 tap_code(KC_ESC);
-                gam_ent_on = false;
-                layer_invert(_GAMING); // Switches back to GAMING layer after chatting
+                game_chat_set = false;
+                layer_invert(_GAMING);                     // Switches back to GAMING layer after chatting
             }
             return true; // Let QMK handle the rest
         
-        case KC_ENTER:
-            if (gam_ent_on && record->event.pressed) { // Checks if GAM_ENT was pressed ingame
+        case KC_ENT:
+            if (game_chat_set && record->event.pressed) {  // Checks if GAM_CHT was pressed ingame
                 tap_code(KC_ENT);
-                gam_ent_on = false;
-                layer_invert(_GAMING); // Switches back to GAMING layer after chatting
+                game_chat_set = false;
+                layer_invert(_GAMING);                     // Switches back to GAMING layer after chatting
             }
             return true; // Let QMK handle the rest
 
-        case GAM_ENT:
-            // Toggle `gam_ent_on`
+        case GAM_CHT:
+            // Toggle `game_chat_set`
             if (record->event.pressed) {
                 tap_code(KC_ENT);
                 layer_invert(_GAMING);
-                gam_ent_enable();               
+                game_chat_enable();               
             }
             return false;
 
