@@ -504,47 +504,13 @@ bool oled_task_user(void) {
 // and then toggles off Caps Lock automatically when you're done.
 void gam_ent_enable(void) {
     gam_ent_on = true;
-    
 }
 
 void gam_ent_disable(void) {
-    gam_ent_on = false;
-    layer_invert(_GAMING);
-    
+    gam_ent_on = false;    
 }
-
-static void process_gam_ent(uint16_t keycode, const keyrecord_t *record) {
-    // Update caps word state
-    if (gam_ent_on) {
-
-        switch (keycode) {
-            // Keycodes to shift
-            case KC_A ... KC_Z:
-            case KC_MINS:
-            case KC_BSPC:
-            case KC_UNDS:
-            case KC_LPRN:
-            case KC_RPRN:
-                // When enter is pressed, returns to game layer
-                if (record->event.pressed) {
-                    tap_code(KC_ENT);
-                    gam_ent_disable();
-                }
-                break;
-        /*    default:
-                // Any other keycode should automatically return to game
-                if (record->event.pressed) {                
-                    gam_ent_disable();
-                }
-                break;*/
-        }
-    }
-}
-
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-        process_gam_ent(keycode, record);
-
 
     switch (keycode) {
          
@@ -592,23 +558,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+/*        case TO(_COLEMAKDH):
+            if (record->event.pressed) {
+                gam_ent_on = true;
+            }
+            return true; // Let QMK handle the rest for TO(_COLEMAKDH)
+*/
+        case KC_ENTER:
+            if (gam_ent_on && record->event.pressed) {
+                gam_ent_on = false;
+                layer_invert(_GAMING); // Switch to GAMING layer
+            }
+            return true; // Let QMK handle the rest
+
         case GAM_ENT:
             // Toggle `gam_ent_on`
             if (record->event.pressed) {
-                tap_code(KC_ENT);   
                 layer_invert(_GAMING);
-            
-            /*    if (gam_ent_on) {
-                    gam_ent_disable();
-                    return false;
-                } else {*/
-                    gam_ent_enable();
-            /*        return false;
-                }*/
-                
+                gam_ent_enable();               
             }
             return false;
-            break;
 
         case KC_D_MUTE:
             if (record->event.pressed) {
