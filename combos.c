@@ -28,6 +28,15 @@ enum combo_events {
     STE_ALRD,
     STE_ALRG,
     STE_ALSO,
+    STE_UNDR,
+    STE_NBDY,
+    STE_NTIL,
+    STE_TNUE,
+    STE_WTHN,
+    STE_RESN,
+    STE_BEFR,
+    STE_IF,
+
     
 
 
@@ -46,6 +55,8 @@ const uint16_t PROGMEM STE_ABT_COMBO[]    = {KC_F,     KC_S,    COMBO_END};
 const uint16_t PROGMEM STE_WIL_COMBO[]    = {KC_P,     KC_T,    COMBO_END};
 const uint16_t PROGMEM STE_HV_COMBO[]     = {KC_A,     KC_T,    COMBO_END};
 const uint16_t PROGMEM STE_DID_COMBO[]    = {KC_W,     KC_R,    COMBO_END};
+const uint16_t PROGMEM STE_IF_COMBO[]    = {KC_W,     KC_F,    COMBO_END};
+
 
 const uint16_t PROGMEM STE_A_COMBO[]      = {KC_A,     KC_R,    KC_F,    COMBO_END};
 const uint16_t PROGMEM STE_F_COMBO[]      = {KC_W,     KC_F,    KC_N,    COMBO_END};
@@ -54,10 +65,19 @@ const uint16_t PROGMEM STE_WHY_COMBO[]    = {KC_R,     KC_S,    KC_T,    COMBO_E
 const uint16_t PROGMEM STE_MENT_COMBO[]   = {KC_L,     KC_U,    KC_Y,    COMBO_END};
 const uint16_t PROGMEM STE_ALRD_COMBO[]   = {KC_P,     KC_T,    KC_N,    COMBO_END};
 const uint16_t PROGMEM STE_ALSO_COMBO[]   = {KC_P,     KC_T,    KC_O,    COMBO_END};
+const uint16_t PROGMEM STE_TNUE_COMBO[]   = {KC_W,     KC_U,    KC_E,    COMBO_END};
+const uint16_t PROGMEM STE_WTHN_COMBO[]   = {KC_S,     KC_U,    KC_E,    COMBO_END};
+const uint16_t PROGMEM STE_RESN_COMBO[]   = {KC_T,     KC_U,    KC_E,    COMBO_END};
+
+
 
 const uint16_t PROGMEM STE_EXPL_COMBO[]   = {KC_R,     KC_F,    KC_U,    KC_Y,       COMBO_END};
 const uint16_t PROGMEM STE_ALRG_COMBO[]   = {KC_P,     KC_T,    KC_N,    KC_SCLN,    COMBO_END};
+const uint16_t PROGMEM STE_NBDY_COMBO[]   = {KC_W,     KC_F,    KC_P,    KC_E,      COMBO_END};
+const uint16_t PROGMEM STE_NTIL_COMBO[]   = {KC_W,     KC_F,    KC_P,    KC_Y,      COMBO_END};
+const uint16_t PROGMEM STE_BEFR_COMBO[]   = {KC_F,     KC_S,    KC_L,    KC_N,      COMBO_END};
 
+const uint16_t PROGMEM STE_UNDR_COMBO[]   = {KC_W,     KC_F,    KC_P,    KC_U,    KC_E,   COMBO_END};
 
 combo_t key_combos[] = {
     [SYM_EXLM]         = COMBO(SYM_EXLM_COMBO, KC_EXLM),
@@ -77,7 +97,16 @@ combo_t key_combos[] = {
     [STE_DID]         = COMBO_ACTION(STE_DID_COMBO),
     [STE_ALRD]         = COMBO_ACTION(STE_ALRD_COMBO),
     [STE_ALRG]         = COMBO_ACTION(STE_ALRG_COMBO),
-    [STE_ALSO]         = COMBO_ACTION(STE_ALSO_COMBO)
+    [STE_ALSO]         = COMBO_ACTION(STE_ALSO_COMBO),
+    [STE_UNDR]         = COMBO_ACTION(STE_UNDR_COMBO),
+    [STE_NBDY]         = COMBO_ACTION(STE_NBDY_COMBO),
+    [STE_NTIL]         = COMBO_ACTION(STE_NTIL_COMBO),
+    [STE_TNUE]         = COMBO_ACTION(STE_TNUE_COMBO),
+    [STE_WTHN]         = COMBO_ACTION(STE_WTHN_COMBO),
+    [STE_RESN]         = COMBO_ACTION(STE_RESN_COMBO),
+    [STE_BEFR]         = COMBO_ACTION(STE_BEFR_COMBO),
+    [STE_IF]         = COMBO_ACTION(STE_IF_COMBO)
+
 
 };
 
@@ -166,6 +195,54 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case STE_ALSO:
             if (pressed) {
                 SEND_STRING("also "); 
+            }
+        break;
+
+        case STE_UNDR:
+            if (pressed) {
+                SEND_STRING("under "); 
+            }
+        break;
+
+        case STE_NBDY:
+            if (pressed) {
+                SEND_STRING("nobody "); 
+            }
+        break;
+
+        case STE_NTIL:
+            if (pressed) {
+                SEND_STRING("until "); 
+            }
+        break;
+
+        case STE_TNUE:
+            if (pressed) {
+                SEND_STRING("continue "); 
+            }
+        break;
+
+        case STE_WTHN:
+            if (pressed) {
+                SEND_STRING("within "); 
+            }
+        break;
+
+        case STE_RESN:
+            if (pressed) {
+                SEND_STRING("reason "); 
+            }
+        break;
+
+        case STE_BEFR:
+            if (pressed) {
+                SEND_STRING("before "); 
+            }
+        break;
+
+        case STE_IF:
+            if (pressed) {
+                SEND_STRING("if "); 
             }
         break;
 
