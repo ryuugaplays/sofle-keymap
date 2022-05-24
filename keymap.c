@@ -91,23 +91,24 @@ enum custom_keycodes {
     KC_ADJUST,
     KC_D_MUTE,
     KC_SWITCH, 
-    GAM_CHT
+    GAM_CHT,
+    BRACES
     
 };
 
 uint16_t last_keycode;
 
 #ifdef TAP_DANCE_ENABLE
-enum {
-    DOT_TD = 0,
-    LANG_TD
-};
+    enum {
+        DOT_TD = 0,
+        LANG_TD
+    };
 
-#define TD_DOT TD(DOT_TD)
-#define TD_LANG TD(LANG_TD)
-#else
-#define TD_DOT KC_DOT
-#define TD_LANG KC_GRV
+    #define TD_DOT TD(DOT_TD)
+    #define TD_LANG TD(LANG_TD)
+        #else
+        #define TD_DOT KC_DOT
+        #define TD_LANG KC_GRV
 #endif
 
 bool game_chat_set;
@@ -155,9 +156,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |   G  |   A  |   S  |   D  |   F  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |LSHFT |   B  |   Z  |   X  |   C  |   V  |-------|    |-------|   N  |   M  |   ,  |   .  |   '  |  /   |
+ * |Enter |   B  |   Z  |   X  |   C  |   V  |-------|    |-------|   N  |   M  |   ,  |   .  |   '  |  /   |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *            |      |NUMPAD| LCTR | Space| /Enter  /       \Tab   \  | LALT |      | NAV  |      |
+ *            |Enter |NUMPAD| LCTR | Space| /C-Tab  /       \Tab   \  | LALT |      | NAV  |      |
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
  *            `----------------------------------'           '------''---------------------------'
  */
@@ -169,9 +170,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------| 
   XXXXXXX,  KC_G,   KC_A,    KC_S,    KC_D,    KC_F,                      KC_H,    KC_J,   KC_K,    KC_L,    KC_SCLN, XXXXXXX, \
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------| 
-  KC_LSFT  ,KC_B,   KC_Z,    KC_X,    KC_C,    KC_V,   XXXXXXX,   XXXXXXX,KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_QUOT, KC_SLSH, \
+  KC_F1,    KC_B,   KC_Z,    KC_X,    KC_C,    KC_V,   XXXXXXX,   XXXXXXX,KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_QUOT, KC_SLSH, \
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------| 
-                 XXXXXXX, KC_NUMPAD,KC_LCTRL, KC_SPC,  GAM_CHT,   KC_TAB, KC_LALT,  XXXXXXX,  KC_NAV, XXXXXXX \
+                 GAM_CHT, KC_NUMPAD,KC_LCTRL, KC_SPC,  C(KC_TAB),   KC_TAB, KC_LALT,  XXXXXXX,  KC_NAV, XXXXXXX \
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/  
 ),
 
@@ -179,11 +180,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * | trans|      |      |      |      |      |                    |      |   \  |   *  |   -  |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |  &   |  (   |   @  |   {  |   }  |                    |   %  |   7  |   8  |   9  |  +   |      |
+ * |      |  &   |  (   |   @  |   )  |      |                    |   %  |   7  |   8  |   9  |  +   |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |  !   |   ?  |   [  |   ]  |-------.    ,-------|   $  |   4  |   5  |   6  |      |      |
+ * |      |  \   |  [   |   #  |   ]  |BRACES|-------.    ,-------|   $  |   4  |   5  |   6  |      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      |      |  |   |   #  |   ^  |      |-------|    |-------|      |   1  |   2  |   3  |      |      |
+ * |      |      |  {   |   |  |   }  |  ^   |-------|    |-------|      |   1  |   2  |   3  |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | WIN  |      | LCTR |  _   | /Enter  /       \Bspc  \  |  0   |  .   |ADJUST|   =  |
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
@@ -193,11 +194,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,------------------------------------------------.                    ,---------------------------------------------------.
   _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, KC_SLSH, KC_ASTR, KC_MINS,XXXXXXX, XXXXXXX,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  XXXXXXX, KC_AMPR, KC_LPRN, KC_AT,   KC_LCBR, KC_RCBR,                   KC_PERC, KC_P7,  KC_P8,   KC_P9,   KC_PLUS,  _______,
+  XXXXXXX, KC_AMPR, KC_LPRN, KC_AT,   KC_RPRN, XXXXXXX,                   KC_PERC, KC_P7,  KC_P8,   KC_P9,   KC_PLUS,  _______,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  XXXXXXX, KC_BSLS, KC_EXLM, KC_QUES, KC_LBRC, KC_RBRC,                   KC_DLR , KC_P4,  KC_P5,   KC_P6,   XXXXXXX,  XXXXXXX,
+  XXXXXXX, KC_BSLS, KC_LBRC, KC_HASH, KC_RBRC , BRACES,                   KC_DLR , KC_P4,  KC_P5,   KC_P6,   XXXXXXX,  XXXXXXX,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-  XXXXXXX, XXXXXXX, KC_PIPE, KC_HASH, KC_CIRC, XXXXXXX,_______,    _______,XXXXXXX,KC_P1,  KC_P2,   KC_P3,   XXXXXXX,  _______,
+  XXXXXXX, XXXXXXX, KC_LCBR, KC_PIPE, KC_RCBR , KC_CIRC,_______,    _______,XXXXXXX,KC_P1,  KC_P2,   KC_P3,   XXXXXXX,  _______,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
                  _______, XXXXXXX, _______, KC_UNDS,  _______,    _______,  KC_P0,    KC_PDOT, KC_ADJUST, KC_EQL
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
@@ -512,6 +513,9 @@ void game_chat_disable(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // Get current mod and one-shot mod states.
+    const uint8_t mods = get_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
 
     switch (keycode) {
          
@@ -592,6 +596,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_mods(mod_config(MOD_MEH));
                 unregister_code(KC_UP);
             }
+
+        case BRACES:  // Types (), {}, or <> and puts cursor between braces.
+            if (record->event.pressed) {
+                clear_mods();  // Temporarily disable mods.
+                clear_oneshot_mods();
+                if ((mods | oneshot_mods) & MOD_MASK_SHIFT) {
+                    SEND_STRING("{}");
+                } else if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                    SEND_STRING("[]");
+                } else {
+                    SEND_STRING("()");
+                }
+                tap_code(KC_LEFT);  // Move cursor between braces.
+                set_mods(mods);  // Restore mods.
+            }
+            return false;
     }
     return true;
 }
@@ -601,17 +621,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
         if (clockwise) {
-            tap_code(KC_VOLU);
+            tap_code(KC_WH_D);
         } else {
-            tap_code(KC_VOLD);
+            tap_code(KC_WH_U);
         }
 		} else if (index == 1) {
 			switch (get_highest_layer(layer_state)) {				
 				case _COLEMAKDH:
+                case _GAMING:
 					if (clockwise) {
-						tap_code(KC_PGDOWN);
+						tap_code(KC_RGHT);
 					} else {
-						tap_code(KC_PGUP);
+						tap_code(KC_LEFT);
 					}
 				break;
 			case _NAV:
@@ -631,7 +652,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 				break;
 		}
     }
-    return true;
+    return false;
 }
 
 #endif

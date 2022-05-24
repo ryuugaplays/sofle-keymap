@@ -36,6 +36,9 @@ enum combo_events {
     STE_RESN,
     STE_BEFR,
     STE_IF,
+    STE_KO,
+    STE_WO,
+    STE_SHO,
 
     
 
@@ -56,6 +59,8 @@ const uint16_t PROGMEM STE_WIL_COMBO[]    = {KC_P,     KC_T,    COMBO_END};
 const uint16_t PROGMEM STE_HV_COMBO[]     = {KC_A,     KC_T,    COMBO_END};
 const uint16_t PROGMEM STE_DID_COMBO[]    = {KC_W,     KC_R,    COMBO_END};
 const uint16_t PROGMEM STE_IF_COMBO[]    = {KC_W,     KC_F,    COMBO_END};
+const uint16_t PROGMEM STE_KO_COMBO[]    = {KC_R,     KC_SPC,    COMBO_END};
+const uint16_t PROGMEM STE_WO_COMBO[]    = {KC_S,     KC_SPC,    COMBO_END};
 
 
 const uint16_t PROGMEM STE_A_COMBO[]      = {KC_A,     KC_R,    KC_F,    COMBO_END};
@@ -68,6 +73,7 @@ const uint16_t PROGMEM STE_ALSO_COMBO[]   = {KC_P,     KC_T,    KC_O,    COMBO_E
 const uint16_t PROGMEM STE_TNUE_COMBO[]   = {KC_W,     KC_U,    KC_E,    COMBO_END};
 const uint16_t PROGMEM STE_WTHN_COMBO[]   = {KC_S,     KC_U,    KC_E,    COMBO_END};
 const uint16_t PROGMEM STE_RESN_COMBO[]   = {KC_T,     KC_U,    KC_E,    COMBO_END};
+const uint16_t PROGMEM STE_SHO_COMBO[]   = {KC_Q,     KC_P,    KC_SPC,    COMBO_END};
 
 
 
@@ -105,7 +111,10 @@ combo_t key_combos[] = {
     [STE_WTHN]         = COMBO_ACTION(STE_WTHN_COMBO),
     [STE_RESN]         = COMBO_ACTION(STE_RESN_COMBO),
     [STE_BEFR]         = COMBO_ACTION(STE_BEFR_COMBO),
-    [STE_IF]         = COMBO_ACTION(STE_IF_COMBO)
+    [STE_IF]         = COMBO_ACTION(STE_IF_COMBO),
+    [STE_KO]         = COMBO_ACTION(STE_KO_COMBO),
+    [STE_WO]         = COMBO_ACTION(STE_WO_COMBO),
+    [STE_SHO]         = COMBO_ACTION(STE_SHO_COMBO)
 
 
 };
@@ -243,6 +252,24 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case STE_IF:
             if (pressed) {
                 SEND_STRING("if "); 
+            }
+        break;
+
+        case STE_KO:
+            if (pressed) {
+                SEND_STRING("could "); 
+            }
+        break;
+
+        case STE_WO:
+            if (pressed) {
+                SEND_STRING("would "); 
+            }
+        break;
+
+        case STE_SHO:
+            if (pressed) {
+                SEND_STRING("should "); 
             }
         break;
 
