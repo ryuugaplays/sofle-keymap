@@ -628,11 +628,18 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 		} else if (index == 1) {
 			switch (get_highest_layer(layer_state)) {				
 				case _COLEMAKDH:
-                case _GAMING:
 					if (clockwise) {
 						tap_code(KC_RGHT);
 					} else {
 						tap_code(KC_LEFT);
+					}
+				break;
+
+                case _GAMING:
+					if (clockwise) {
+						tap_code(KC_MS_RIGHT);
+					} else {
+						tap_code(KC_MS_LEFT);
 					}
 				break;
 			case _NAV:
