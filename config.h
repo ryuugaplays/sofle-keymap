@@ -37,8 +37,8 @@
 #define LAYER_STATE_8BIT
 
 
-#define MASTER_LEFT
-// #define MASTER_RIGHT
+// #define MASTER_LEFT
+ #define MASTER_RIGHT
 // #define EE_HANDS
 
 #define CUSTOM_FONT
@@ -57,8 +57,23 @@
 #endif
 
 
+//ENCODER MOUSE SETTINGS
+#define MK_3_SPEED
+#define MK_MOMENTARY_ACCEL
+
+#define MK_C_OFFSET_UNMOD 50
+#define MK_C_INTERVAL_UNMOD 16
+
+#define MK_W_OFFSET_UNMOD 1
+#define MK_W_INTERVAL_UNMOD 120
+
+
+
+
+
+
+//RGB SETTINGS
 #define RGBLIGHT_SLEEP
-//
 #define RGBLIGHT_LAYERS
 
 /* ws2812 RGB LED */
